@@ -2,7 +2,9 @@ package main
 
 import (
 	"dogker/andrenk/billing-service/internal/rest"
+	"dogker/andrenk/billing-service/internal/rest/auth"
 	"dogker/andrenk/billing-service/internal/rest/deposits"
+	"fmt"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -21,10 +23,21 @@ func main() {
 
 	db.AutoMigrate(&deposits.Deposit{})
 
+	//Public Key Setup
+	publicKeyPEM := "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnlwXdOFOQFhhEoYksncm/mmRMjVv\nVKiJhzabtB5d2uMV7Xn0SKVzJB4jKUM/05Qcfmxkjt4OyBJNQ4LE5oa3eQ==\n-----END PUBLIC KEY-----\n"
+
+	err = auth.InitPublicKey(publicKeyPEM)
+	if err != nil {
+		fmt.Println("Failed to initialize public key:", err)
+		return
+	}
+
+	//Deposits Setup
 	depositRepository := deposits.NewRepository(db)
 	depositService := deposits.NewService(depositRepository)
 	depositsHandler := deposits.NewDepositsHandler(depositService)
 
+	//REST Setup
 	router := gin.Default()
 	api := router.Group("/api/v1")
 
@@ -32,9 +45,10 @@ func main() {
 
 	depositsRoute := api.Group("/deposits")
 	{
-		depositsRoute.GET("/deposits", depositsHandler.GetDepositByID)
-		depositsRoute.POST("/deposits", depositsHandler.AddDeposit)
-		depositsRoute.PUT("/deposits", depositsHandler.UpdateDeposit)
+		depositsRoute.GET("/", depositsHandler.GetDepositByID)
+		depositsRoute.POST("/init", depositsHandler.InitiateDeposit)
+		depositsRoute.POST("/", depositsHandler.AddDeposit)
+		depositsRoute.PUT("/", depositsHandler.UpdateDeposit)
 	}
 
 	router.Run(":8080")

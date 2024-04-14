@@ -1,8 +1,12 @@
 package deposits
 
-import "gorm.io/gorm"
+import (
+	"github.com/midtrans/midtrans-go/snap"
+	"gorm.io/gorm"
+)
 
 type Repository interface {
+	Initiate(snap snap.Client, req *snap.Request) (*snap.Response, error)
 	Save(deposit Deposit) (Deposit, error)
 	FindByID(id string) (Deposit, error)
 	Update(deposit Deposit) (Deposit, error)
@@ -14,6 +18,12 @@ type repository struct {
 
 func NewRepository(db *gorm.DB) *repository {
 	return &repository{db}
+}
+
+func (r *repository) Initiate(snap snap.Client, req *snap.Request) (*snap.Response, error) {
+	snapResp, _ := snap.CreateTransaction(req)
+
+	return snapResp, nil
 }
 
 func (r *repository) Save(deposit Deposit) (Deposit, error) {

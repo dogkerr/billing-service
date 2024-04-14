@@ -1,41 +1,36 @@
 package auth
 
 import (
-	"fmt"
-	"os"
-
-	"github.com/dgrijalva/jwt-go"
+	"crypto/ecdsa"
+	"crypto/x509"
+	"encoding/pem"
+	"errors"
 )
 
-func parseToken(tokenStr string) (*jwt.Token, error) {
-	token, err := jwt.ParseWithClaims(tokenStr, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
-		// Verify the algorithm used for the token
-		_, ok := token.Method.(*jwt.SigningMethodRSA)
-		if !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
+var publicKey *ecdsa.PublicKey
 
-		// Load your public key from the environment variable
-		publicKey, err := jwt.ParseRSAPublicKeyFromPEM([]byte(os.Getenv("JWT_PUBLIC_KEY")))
-		if err != nil {
-			return nil, err
-		}
+// InitPublicKey initializes the public key used for JWT verification
+func InitPublicKey(publicKeyPEM string) error {
+	publicKeyBytes := []byte(publicKeyPEM)
 
-		return publicKey, nil
-	})
+	block, _ := pem.Decode(publicKeyBytes)
+	if block == nil || block.Type != "PUBLIC KEY" {
+		return ErrInvalidPublicKey
+	}
 
-	return token, err
-}
-
-func VerifyToken(tokenStr string) error {
-	token, err := parseToken(tokenStr)
+	pub, err := x509.ParsePKIXPublicKey(block.Bytes)
 	if err != nil {
 		return err
 	}
 
-	if !token.Valid {
-		return fmt.Errorf("invalid token")
-	}
-
+	publicKey = pub.(*ecdsa.PublicKey)
 	return nil
 }
+
+// GetPublicKey returns the initialized public key
+func GetPublicKey() *ecdsa.PublicKey {
+	return publicKey
+}
+
+// ErrInvalidPublicKey is returned when the provided public key is invalid
+var ErrInvalidPublicKey = errors.New("invalid public key")

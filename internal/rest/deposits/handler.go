@@ -14,6 +14,24 @@ func NewDepositsHandler(depositService Service) *depositsHandler {
 	return &depositsHandler{depositService}
 }
 
+func (h *depositsHandler) InitiateDeposit(c *gin.Context) {
+	var input DepositInput
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	snapResponse, err := h.depositService.InitiateDeposit(input)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": snapResponse})
+}
+
 func (h *depositsHandler) AddDeposit(c *gin.Context) {
 	var input DepositInput
 
