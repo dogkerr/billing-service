@@ -4,6 +4,8 @@ import (
 	"dogker/andrenk/billing-service/internal/rest"
 	"dogker/andrenk/billing-service/internal/rest/auth"
 	"dogker/andrenk/billing-service/internal/rest/deposits"
+	"dogker/andrenk/billing-service/internal/rest/mutations"
+	"dogker/andrenk/billing-service/internal/rest/payment"
 	"fmt"
 	"log"
 
@@ -21,7 +23,7 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	db.AutoMigrate(&deposits.Deposit{})
+	db.AutoMigrate(&deposits.Deposit{}, &mutations.Mutation{})
 
 	//Public Key Setup
 	publicKeyPEM := "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnlwXdOFOQFhhEoYksncm/mmRMjVv\nVKiJhzabtB5d2uMV7Xn0SKVzJB4jKUM/05Qcfmxkjt4OyBJNQ4LE5oa3eQ==\n-----END PUBLIC KEY-----\n"
@@ -32,23 +34,34 @@ func main() {
 		return
 	}
 
+	//Auth Setup
+	authService := auth.NewService()
+
+	//Payment Setup
+	paymentService := payment.NewService()
+
+	//Mutation Setup
+	mutationRepository := mutations.NewRepository(db)
+	mutationService := mutations.NewService(mutationRepository)
+
 	//Deposits Setup
 	depositRepository := deposits.NewRepository(db)
 	depositService := deposits.NewService(depositRepository)
-	depositsHandler := deposits.NewDepositsHandler(depositService)
+	depositsHandler := deposits.NewDepositsHandler(depositService, paymentService, authService, mutationService)
 
 	//REST Setup
 	router := gin.Default()
 	api := router.Group("/api/v1")
 
-	router.Use(rest.AuthMiddleware())
-
 	depositsRoute := api.Group("/deposits")
 	{
-		depositsRoute.GET("/", depositsHandler.GetDepositByID)
-		depositsRoute.POST("/init", depositsHandler.InitiateDeposit)
-		depositsRoute.POST("/", depositsHandler.AddDeposit)
-		depositsRoute.PUT("/", depositsHandler.UpdateDeposit)
+		depositsRoute.GET("/", rest.AuthMiddleware(), depositsHandler.GetDepositByID)
+		depositsRoute.POST("/", rest.AuthMiddleware(), depositsHandler.InitiateDeposit)
+	}
+
+	notificationRoute := api.Group("/notification")
+	{
+		notificationRoute.POST("/", depositsHandler.HandleNotificationPayment)
 	}
 
 	router.Run(":8080")

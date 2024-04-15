@@ -1,36 +1,44 @@
 package auth
 
 import (
-	"crypto/ecdsa"
-	"crypto/x509"
-	"encoding/pem"
-	"errors"
+	"context"
+	"dogker/andrenk/billing-service/protos"
+	"log"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
-var publicKey *ecdsa.PublicKey
+type service struct{}
 
-// InitPublicKey initializes the public key used for JWT verification
-func InitPublicKey(publicKeyPEM string) error {
-	publicKeyBytes := []byte(publicKeyPEM)
+type Service interface {
+	GetUserById(userID string) (*protos.User, error)
+}
 
-	block, _ := pem.Decode(publicKeyBytes)
-	if block == nil || block.Type != "PUBLIC KEY" {
-		return ErrInvalidPublicKey
-	}
+func NewService() *service {
+	return &service{}
+}
 
-	pub, err := x509.ParsePKIXPublicKey(block.Bytes)
+func (s *service) GetUserById(userID string) (*protos.User, error) {
+	//users gRPC Client Setup
+	conn, err := grpc.Dial("10.66.66.1:4001", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		return err
+		log.Fatalf("Failed to dial server: %v", err)
+	}
+	defer conn.Close()
+
+	usersClient := protos.NewUsersServiceClient(conn)
+
+	req := &protos.GetUserRequest{
+		Id: userID,
 	}
 
-	publicKey = pub.(*ecdsa.PublicKey)
-	return nil
-}
+	//Get User by ID
+	user, err := usersClient.GetUserById(context.Background(), req)
 
-// GetPublicKey returns the initialized public key
-func GetPublicKey() *ecdsa.PublicKey {
-	return publicKey
-}
+	if err != nil {
+		return nil, err
+	}
 
-// ErrInvalidPublicKey is returned when the provided public key is invalid
-var ErrInvalidPublicKey = errors.New("invalid public key")
+	return user, nil
+}
