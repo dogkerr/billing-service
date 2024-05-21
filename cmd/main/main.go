@@ -3,6 +3,7 @@ package main
 import (
 	"dogker/andrenk/billing-service/internal/rest"
 	"dogker/andrenk/billing-service/internal/rest/auth"
+	"dogker/andrenk/billing-service/internal/rest/charges"
 	"dogker/andrenk/billing-service/internal/rest/deposits"
 	"dogker/andrenk/billing-service/internal/rest/mutations"
 	"dogker/andrenk/billing-service/internal/rest/payment"
@@ -16,7 +17,7 @@ import (
 
 func main() {
 	//GORM Setup
-	dsn := "host=localhost user=dogker_admin password=endeavor dbname=billing_db port=5432 sslmode=disable"
+	dsn := "host=localhost user=admin password=admin dbname=dogker port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
@@ -43,11 +44,17 @@ func main() {
 	//Mutation Setup
 	mutationRepository := mutations.NewRepository(db)
 	mutationService := mutations.NewService(mutationRepository)
+	mutationsHandler := mutations.NewMutationsHandler(mutationService)
 
 	//Deposits Setup
 	depositRepository := deposits.NewRepository(db)
 	depositService := deposits.NewService(depositRepository)
 	depositsHandler := deposits.NewDepositsHandler(depositService, paymentService, authService, mutationService)
+
+	//Charges Setup
+	chargeRepository := charges.NewRepository(db)
+	chargeService := charges.NewService(chargeRepository)
+	chargeHandler := charges.NewChargeHandler(chargeService, mutationService)
 
 	//REST Setup
 	router := gin.Default()
@@ -59,10 +66,22 @@ func main() {
 		depositsRoute.POST("/", rest.AuthMiddleware(), depositsHandler.InitiateDeposit)
 	}
 
+	chargesRoute := api.Group("/charges")
+	{
+		chargesRoute.POST("/", rest.AuthMiddleware(), chargeHandler.InitiateCharge)
+		chargesRoute.GET("/", rest.AuthMiddleware(), chargeHandler.GetChargeByID)
+	}
+
+	mutationsRoute := api.Group("/mutations")
+	{
+		mutationsRoute.GET("/", rest.AuthMiddleware(), mutationsHandler.GetMutationsByUserID)
+		mutationsRoute.GET("/:id", rest.AuthMiddleware(), mutationsHandler.GetMutationByID)
+	}
+
 	notificationRoute := api.Group("/notification")
 	{
 		notificationRoute.POST("/", depositsHandler.HandleNotificationPayment)
 	}
 
-	router.Run(":8080")
+	router.Run(":6969")
 }

@@ -9,7 +9,7 @@ type Repository interface {
 	Initiate(snap snap.Client, req *snap.Request) (*snap.Response, error)
 	Save(deposit Deposit) (Deposit, error)
 	FindByID(id string) (Deposit, error)
-	Update(deposit Deposit) (Deposit, error)
+	Update(deposit Deposit) (Deposit, error) //for update status
 }
 
 type repository struct {

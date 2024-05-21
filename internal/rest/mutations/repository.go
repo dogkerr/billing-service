@@ -3,10 +3,9 @@ package mutations
 import "gorm.io/gorm"
 
 type Repository interface {
-	GetMutations() ([]Mutation, error)
-	GetMutationByID(id string) (Mutation, error)
-	GetMutationByUserID(id string) ([]Mutation, error)
-	CreateMutation(mutation Mutation) (Mutation, error)
+	FindByID(id string) (Mutation, error)
+	FindByUserID(id string) ([]Mutation, error)
+	Save(mutation Mutation) (Mutation, error)
 }
 
 type repository struct {
@@ -17,25 +16,7 @@ func NewRepository(db *gorm.DB) *repository {
 	return &repository{db}
 }
 
-func (r *repository) GetMutations() ([]Mutation, error) {
-	var mutations []Mutation
-	if err := r.db.Find(&mutations).Error; err != nil {
-		return mutations, err
-	}
-
-	return mutations, nil
-}
-
-func (r *repository) GetMutationByUserID(id string) ([]Mutation, error) {
-	var mutations []Mutation
-	if err := r.db.Where("user_id = ?", id).Order("created_at desc").Find(&mutations).Error; err != nil {
-		return mutations, err
-	}
-
-	return mutations, nil
-}
-
-func (r *repository) GetMutationByID(id string) (Mutation, error) {
+func (r *repository) FindByID(id string) (Mutation, error) {
 	var mutation Mutation
 	if err := r.db.Where("id = ?", id).First(&mutation).Error; err != nil {
 		return mutation, err
@@ -44,7 +25,16 @@ func (r *repository) GetMutationByID(id string) (Mutation, error) {
 	return mutation, nil
 }
 
-func (r *repository) CreateMutation(mutation Mutation) (Mutation, error) {
+func (r *repository) FindByUserID(id string) ([]Mutation, error) {
+	var mutations []Mutation
+	if err := r.db.Where("user_id = ?", id).Order("created_at desc").Find(&mutations).Error; err != nil {
+		return mutations, err
+	}
+
+	return mutations, nil
+}
+
+func (r *repository) Save(mutation Mutation) (Mutation, error) {
 	if err := r.db.Create(&mutation).Error; err != nil {
 		return Mutation{}, err
 	}

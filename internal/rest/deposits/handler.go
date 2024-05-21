@@ -54,8 +54,6 @@ func (h *depositsHandler) InitiateDeposit(c *gin.Context) {
 
 	log.Info("User: ", user)
 
-	fmt.Println("Calling paymentService.GetPayment")
-
 	// Call the paymentService.GetPayment method
 	transaction, err := h.paymentService.GetPayment(input, user)
 	if err != nil {

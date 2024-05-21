@@ -3,7 +3,7 @@ package mutations
 import "time"
 
 type Service interface {
-	GetMutations() ([]Mutation, error)
+	GetMutationsByUserID(id string) ([]Mutation, error)
 	GetMutationByID(id string) (Mutation, error)
 	CreateMutation(mutation MutationInput) (Mutation, error)
 }
@@ -16,17 +16,17 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
-func (s *service) GetMutations() ([]Mutation, error) {
-	return s.repository.GetMutations()
+func (s *service) GetMutationByID(id string) (Mutation, error) {
+	return s.repository.FindByID(id)
 }
 
-func (s *service) GetMutationByID(id string) (Mutation, error) {
-	return s.repository.GetMutationByID(id)
+func (s *service) GetMutationsByUserID(id string) ([]Mutation, error) {
+	return s.repository.FindByUserID(id)
 }
 
 func (s *service) CreateMutation(mutation MutationInput) (Mutation, error) {
 	//Get previous mutation
-	mutations, err := s.repository.GetMutationByUserID(mutation.UserID)
+	mutations, err := s.repository.FindByUserID(mutation.UserID)
 	if err != nil {
 		return Mutation{}, err
 	}
@@ -60,5 +60,5 @@ func (s *service) CreateMutation(mutation MutationInput) (Mutation, error) {
 		UpdatedAt: time.Now(),
 	}
 
-	return s.repository.CreateMutation(mutationObj)
+	return s.repository.Save(mutationObj)
 }
