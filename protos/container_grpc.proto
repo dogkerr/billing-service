@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package containerservice;
+
+option go_package = "dogker/andrenk/billing-service/protos";
+
+message HelloResp{
+    string message=1;
+}
+message HelloReq {
+    string messageReq = 1;
+}
+
+
+
+message ContainerTerminatedAccidentallyReq {
+    repeated string serviceIDs = 1;
+}
+
+message ContainerTerminatedAccidentallyRes {
+    string message = 1;
+}
+
+message StopUserContainerCreditLimitReq {
+    string userID = 1;
+}
+
+message StopUserContainerCreditLimitRes {
+    string message = 1;
+}
+
+message GetContainerStatusReq {
+    string serviceID = 1;
+}
+
+message GetContainerStatusRes {
+    bool status =1;
+}
+
+service ContainerGRPCService { 
+    rpc Hello(HelloReq) returns (HelloResp);
+    rpc ContainerTerminatedAccidentally(ContainerTerminatedAccidentallyReq) returns (ContainerTerminatedAccidentallyRes);
+    rpc StopContainerCreditLimit(StopUserContainerCreditLimitReq) returns (StopUserContainerCreditLimitRes);
+    rpc GetContainerStatus(GetContainerStatusReq) returns (GetContainerStatusRes);
+}
+
+
+

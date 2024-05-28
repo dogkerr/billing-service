@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+option go_package = "dogker/andrenk/billing-service/protos";
+
+package emails;
+
+import "google/protobuf/timestamp.proto";
+
+service EmailService {
+  rpc sendBillingEmail(BillingEmailRequest) returns (BillingEmailResponse) {}
+  rpc sendVerificationEmail(VerificationEmailRequest) returns (VerificationEmailResponse) {}
+}
+
+message VerificationEmailRequest {
+  string email = 1;
+  string name = 2;
+  string verifiction_link = 3;
+}
+
+message VerificationEmailResponse {
+  string message = 1;
+}
+
+message BillingEmailRequest {
+  string id = 1;
+  string container_id = 2;
+  string user_id = 3;
+  float total_cpu_usage = 4;
+  float total_memory_usage = 5;
+  float total_net_ingress_usage = 6;
+  float total_net_egress_usage = 7;
+  google.protobuf.Timestamp timestamp = 8;
+  float total_cost = 9;
+}
+
+message BillingEmailResponse {
+  string message = 1;
+}

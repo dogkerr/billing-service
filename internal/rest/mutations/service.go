@@ -32,7 +32,7 @@ func (s *service) CreateMutation(mutation MutationInput) (Mutation, error) {
 	}
 
 	//Calculate current balance
-	currentBalance := float64(0)
+	currentBalance := float32(0)
 	if len(mutations) > 0 {
 		currentBalance = mutations[0].Balance
 		if mutation.Type == "charge" {

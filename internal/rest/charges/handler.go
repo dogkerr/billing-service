@@ -2,7 +2,6 @@ package charges
 
 import (
 	"dogker/andrenk/billing-service/internal/rest/mutations"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -28,14 +27,12 @@ func (h *chargeHandler) InitiateCharge(c *gin.Context) {
 	// Get the userID from the context JWT
 	userID, ok := c.Get("userID")
 	if !ok {
-		fmt.Println("6")
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
 	// Convert the userID to a string
 	userIDString, ok := userID.(string)
 	if !ok {
-		fmt.Println("7")
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}

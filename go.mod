@@ -9,13 +9,21 @@ require (
 )
 
 require (
+	github.com/go-stack/stack v1.8.1 // indirect
+	github.com/inconshreveable/log15 v3.0.0-testing.3+incompatible // indirect
+	github.com/inconshreveable/log15/v3 v3.0.0-testing.5 // indirect
 	github.com/jackc/puddle/v2 v2.2.1 // indirect
+	github.com/jpillora/backoff v1.0.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
+	go.uber.org/multierr v1.11.0 // indirect
+	golang.ngrok.com/muxado/v2 v2.0.0 // indirect
 	golang.org/x/sync v0.6.0 // indirect
+	golang.org/x/term v0.19.0 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
 require (
@@ -45,8 +53,11 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.1 // indirect
+	github.com/streadway/amqp v1.1.0
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
+	go.uber.org/zap v1.27.0
+	golang.ngrok.com/ngrok v1.9.1
 	golang.org/x/arch v0.7.0 // indirect
 	golang.org/x/crypto v0.22.0 // indirect
 	golang.org/x/net v0.24.0 // indirect

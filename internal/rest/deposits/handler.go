@@ -66,7 +66,7 @@ func (h *depositsHandler) InitiateDeposit(c *gin.Context) {
 	depositInput := DepositInput{
 		ID:     transaction.ID,
 		UserID: transaction.UserID,
-		Amount: float64(transaction.Amount),
+		Amount: float32(transaction.Amount),
 		Status: "pending",
 	}
 

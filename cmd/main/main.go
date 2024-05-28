@@ -1,6 +1,7 @@
 package main
 
 import (
+	"dogker/andrenk/billing-service/internal/rabbitmq"
 	"dogker/andrenk/billing-service/internal/rest"
 	"dogker/andrenk/billing-service/internal/rest/auth"
 	"dogker/andrenk/billing-service/internal/rest/charges"
@@ -17,19 +18,21 @@ import (
 
 func main() {
 	//GORM Setup
-	dsn := "host=localhost user=admin password=admin dbname=dogker port=5432 sslmode=disable"
+	//TODO: 2
+	dsn := "host=103.175.219.0 user=admin password=admin dbname=dogker port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	db.AutoMigrate(&deposits.Deposit{}, &mutations.Mutation{})
+	db.AutoMigrate(&deposits.Deposit{}, &mutations.Mutation{}, &charges.Charge{})
 
 	//Public Key Setup
-	publicKeyPEM := "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnlwXdOFOQFhhEoYksncm/mmRMjVv\nVKiJhzabtB5d2uMV7Xn0SKVzJB4jKUM/05Qcfmxkjt4OyBJNQ4LE5oa3eQ==\n-----END PUBLIC KEY-----\n"
+	//TODO: 3
+	publicKeyAuthServer := "-----BEGIN PUBLIC KEY-----\nMIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQAodxwFdiFKWTG/ZU7vXPdk8ox+nNU\n1JmxsmI8i8tYrYf6QxmwBz13jS/PZsb8dJbMFY3YTMMih6SKz7e+cQ68IbgA7BnY\n5fYFQET4SNHVX/zaH6J70ERJLsRrarmWSXsNbMbnqXlIkoorYXeAn9vsLbr/RPw9\nDYaoq4JrQ+OGsc4LHMw=\n-----END PUBLIC KEY-----\n"
 
-	err = auth.InitPublicKey(publicKeyPEM)
+	err = auth.InitPublicKey(publicKeyAuthServer)
 	if err != nil {
 		fmt.Println("Failed to initialize public key:", err)
 		return
@@ -53,8 +56,34 @@ func main() {
 
 	//Charges Setup
 	chargeRepository := charges.NewRepository(db)
-	chargeService := charges.NewService(chargeRepository)
+	chargeService := charges.NewService(chargeRepository, mutationService)
 	chargeHandler := charges.NewChargeHandler(chargeService, mutationService)
+
+	//RabbitMQ Setup
+	rmq := rabbitmq.NewRabbitMQ("amqp://guest:guest@103.175.219.0:5672/")
+	msgs, err := rmq.Channel.Consume(
+		"monitor-billing",  // queue
+		"billing-consumer", // consumer
+		true,               // auto-ack
+		false,              // exclusive
+		false,              // no-local
+		false,              // no-wait
+		nil,                // args
+	)
+	if err != nil {
+		_ = fmt.Errorf("err: rmq.Channel.Consume: %w", err)
+	}
+
+	go func() {
+		for msg := range msgs {
+			allUsersMetrics, err := rabbitmq.DecodeAllUserMetricsMessage(msg.Body)
+			if err != nil {
+				_ = fmt.Errorf("decodeAllUserMetricsMessage: %w", err)
+			}
+
+			chargeService.ChargeInBatch(allUsersMetrics)
+		}
+	}()
 
 	//REST Setup
 	router := gin.Default()

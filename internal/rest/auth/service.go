@@ -2,11 +2,8 @@ package auth
 
 import (
 	"context"
+	"dogker/andrenk/billing-service/internal/grpc"
 	"dogker/andrenk/billing-service/protos"
-	"log"
-
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 )
 
 type service struct{}
@@ -21,9 +18,9 @@ func NewService() *service {
 
 func (s *service) GetUserById(userID string) (*protos.User, error) {
 	//users gRPC Client Setup
-	conn, err := grpc.Dial("10.66.66.1:4001", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.GetGRPCClient("103.175.219.0:4000")
 	if err != nil {
-		log.Fatalf("Failed to dial server: %v", err)
+		return nil, err
 	}
 	defer conn.Close()
 
