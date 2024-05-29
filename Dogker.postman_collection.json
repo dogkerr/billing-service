@@ -1,0 +1,593 @@
+{
+	"info": {
+		"_postman_id": "b6b515d8-1f67-4781-b12d-4217c4fac3c0",
+		"name": "Dogker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32566777",
+		"_collection_link": "https://workers-id.postman.co/workspace/Team-Workspace~81254cf3-fe20-46cb-8dc2-8331de146f2a/collection/32566777-b6b515d8-1f67-4781-b12d-4217c4fac3c0?source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Deposits",
+			"item": [
+				{
+					"name": "Init Deposit",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJFUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxpbnRhbmcyIiwiaWF0IjoxNzE2NzkxNDgwLCJleHAiOjE3MTY3OTIzODAsInN1YiI6IjMzNjQ2Mjk0LTcyMzktNDUyYy05YTZmLTM0Njc0NDM3YjA5MyJ9.ARjkQOntUvc9lGwAEYY-8M9hWfQgHkmTT7YloyWKXqAfNIrP0WA5kSHdnKjLmidjRTWvw_WCK4_rdQL0I2fNaaEGANFbJUd8L1mw8KLX8KjXGwwNjwe9KDEMKCGfHteIAhQKLIHiezufXiVRYGF2hRFTyHfR2fIdfgp2cGjemz-HrTxY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZHJlbmsjMiIsImlhdCI6MTcxMzE3MTQwMSwiZXhwIjoxNzEzMTcyMzAxLCJzdWIiOiI5MDVmNDkyMC04NWUyLTQ0NzUtODZlMS00ODU5YjEyMWQ1MjUifQ.dgfdsywRj-3S_E8pDt3b9m19CnI0KvG-nmLyb9kLIkNqsW6aKqTLj7FP8Z-ZUDcUAAa48YOygXuyBTDnh3vcyA"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 150000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:6969/api/v1/deposits/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "6969",
+							"path": [
+								"api",
+								"v1",
+								"deposits",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Deposit",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZHJlbmsjMiIsImlhdCI6MTcxMzE1MzE3OCwiZXhwIjoxNzEzMTU0MDc4LCJzdWIiOiI5MDVmNDkyMC04NWUyLTQ0NzUtODZlMS00ODU5YjEyMWQ1MjUifQ.ohTYW9rmSocJTZ0sP-L2sT4aYwRYc_V29TuWZSuh3aopkujRa_LuJTZt7NtyUpH3Gx4a8kqmCmlGCTNolJc7og",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL_BILLING}}/deposits/?id=24d582a6-75e2-4a8c-8360-b8738f1bec3e",
+							"host": [
+								"{{BASE_URL_BILLING}}"
+							],
+							"path": [
+								"deposits",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "24d582a6-75e2-4a8c-8360-b8738f1bec3e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Sign Up",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullname\": \"Andreas Notokusumo #1\",\n    \"email\": \"andreasnotokusumo1@gmail.com\",\n    \"username\": \"{{Username}}\",\n    \"password\": \"{{Password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://10.70.70.1:3001/users",
+							"protocol": "http",
+							"host": [
+								"10",
+								"70",
+								"70",
+								"1"
+							],
+							"port": "3001",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Sign Up",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"fullname\": \"Andreas Notokusumo #2\",\n    \"email\": \"andreasnotokusumo1@gmail.com\",\n    \"username\": \"andrenk#2\",\n    \"password\": \"@ndr3nkd0gk3R\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/users",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 14 Apr 2024 07:30:42 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "104"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "etag",
+									"value": "W/\"68-/eZHptbM4/VLAEpsVz3VmJd1lyU\""
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Report-To",
+									"value": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=vJSLjZ1yiEP7TuBRwprIHjNro8vyFB%2B%2B661CPuKxvvcwk%2F1NSGMhv%2F9ln6OjQLncoPPoO5Zd%2B8cgn9G7KtnmqvO%2By7lNEEXqb3OS4Xvt8c5WxnF1GGcaHuHLBDNrlbIDBvq9sbLnhxaJWQ%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}"
+								},
+								{
+									"key": "NEL",
+									"value": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "8741fdf71e6a24bf-HKG"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"User registered successfully\",\n    \"data\": {\n        \"user\": {\n            \"id\": \"a615c892-9941-4557-9af3-492677b05877\"\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Log In",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{Username}}\",\n    \"password\": \"{{Password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/authentications",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"authentications"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Log In",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"andrenk#2\",\n    \"password\": \"@ndr3nkd0gk3R\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/authentications",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 14 Apr 2024 07:31:07 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "595"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "etag",
+									"value": "W/\"253-yGJhWNIHA8E1CRCLHNzT+KHB42M\""
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Report-To",
+									"value": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=KEoOU0dAX3So0RQNVUAH6GNC1508%2FktaCcvw4GUiisuWmWOnkEGfeYqzu%2FlfOSO5u3ZjK2pGx18YEfHdb4y8mU7z3q4y0hTAm3P%2BgVsorXzPL5inClERFWm6P4gH3Hf8FD2rvCFJDx6IFQ%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}"
+								},
+								{
+									"key": "NEL",
+									"value": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "8741fe902af524bf-HKG"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"User logged in successfully\",\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZHJlbmsjMiIsImlhdCI6MTcxMzA3OTg2NywiZXhwIjoxNzEzMDgwNzY3LCJzdWIiOiJhNjE1Yzg5Mi05OTQxLTQ1NTctOWFmMy00OTI2NzdiMDU4NzcifQ.Dz1FspaLs1ZH12sVk1hRRwE6YLZC4ni1OfSLnQ591xgA1o2Y8VwyEQiAFBhCTztvCLUmUV8XTD0gvYdgzXf3KQ\",\n        \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTMwNzk4NjcsImV4cCI6MTcxMzY4NDY2Nywic3ViIjoiYTYxNWM4OTItOTk0MS00NTU3LTlhZjMtNDkyNjc3YjA1ODc3IiwianRpIjoiZjcyYmIyODQtZjA2MC00ZGQ0LWJhZTMtNjJlMzdjODlmMzI2In0.rvQqLHT-1CEPhup-N6x73BdyodLM4Ll10i4uMg332ZI\"\n    }\n}"
+						},
+						{
+							"name": "Log In",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"{{Username}}\",\n    \"password\": \"{{Password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/authentications",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Mon, 15 Apr 2024 04:09:10 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "595"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "etag",
+									"value": "W/\"253-+G2OYTMTlwLryEcQRg4jX2r5Kzg\""
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Report-To",
+									"value": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=XqIACmcz7fTq7xwQ47owh1R0yFCseIRDTXjMi9LeTeKpyT4bf8%2BRzdMjv6hfyZT%2Bm%2BLLmgX4qjQ7XpnXkrGCdNHxtoG%2BUlGP4ud9SW2trblmWCCSNBavtshlZ5f60U31WAibJ%2FMRX1H9Kw%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}"
+								},
+								{
+									"key": "NEL",
+									"value": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "8749141c8a1a04f3-HKG"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"User logged in successfully\",\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZHJlbmsjMiIsImlhdCI6MTcxMzE1NDE1MCwiZXhwIjoxNzEzMTU1MDUwLCJzdWIiOiI5MDVmNDkyMC04NWUyLTQ0NzUtODZlMS00ODU5YjEyMWQ1MjUifQ.XGFIQMEA20XJ87N0yVhVJtfIDq4fH7m69-LFgl7gEOrn1qEm3py1v4DoC-n3I-dDwIRJP2Pfa0rxVfXcRzJEbg\",\n        \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTMxNTQxNTAsImV4cCI6MTcxMzc1ODk1MCwic3ViIjoiOTA1ZjQ5MjAtODVlMi00NDc1LTg2ZTEtNDg1OWIxMjFkNTI1IiwianRpIjoiZTk0MGZmZWEtYjg2OS00ODdjLWE0NGMtNWM2ZmFkYmQzMDBiIn0.GMosU57XaKm6o0TBp50-5WodeQDS-TxjpIO-Vh7V2jM\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTMxNjYzMTUsImV4cCI6MTcxMzc3MTExNSwic3ViIjoiOTA1ZjQ5MjAtODVlMi00NDc1LTg2ZTEtNDg1OWIxMjFkNTI1IiwianRpIjoiODU2MzQ4OWYtN2FiZC00ZjI5LThkNTUtZGNhY2RjNGEyYmZmIn0.qRsvAosFuWJq1XfNAfxW7gXlEENL5LQ5eSuhuk1IkcQ\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL_AUTH_VPN}}/authentications",
+							"host": [
+								"{{BASE_URL_AUTH_VPN}}"
+							],
+							"path": [
+								"authentications"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Refresh Token",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTMwNzk4NjcsImV4cCI6MTcxMzY4NDY2Nywic3ViIjoiYTYxNWM4OTItOTk0MS00NTU3LTlhZjMtNDkyNjc3YjA1ODc3IiwianRpIjoiZjcyYmIyODQtZjA2MC00ZGQ0LWJhZTMtNjJlMzdjODlmMzI2In0.rvQqLHT-1CEPhup-N6x73BdyodLM4Ll10i4uMg332ZI\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/authentications",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"authentications"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 14 Apr 2024 07:43:13 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "etag",
+									"value": "W/\"148-ghza8cg91orzsZ+SOJqyAgO5mfM\""
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Report-To",
+									"value": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=1UMsLXSwARN1lXsGPjHQPOBYN0CIfkV6Plof99HbbOv3Fz%2B%2BoSnmGHpNZw6RQGcu81mAmwco2mnxqlpqh6Ore6U%2Bkmg5KolRCV7FYDlGaGRLzIGghrkOt9zYzsUWh4ZYnazZ14RRJrnJgQ%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}"
+								},
+								{
+									"key": "NEL",
+									"value": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "8742104f0c423f82-SIN"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Token rotated successfully\",\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZHJlbmsjMiIsImlhdCI6MTcxMzA4MDU5MywiZXhwIjoxNzEzMDgxNDkzLCJzdWIiOiJhNjE1Yzg5Mi05OTQxLTQ1NTctOWFmMy00OTI2NzdiMDU4NzcifQ.uilQtUBt6x9g3mXLXKJ868-1ebvw9rAvSB8mTj_l07rpmBp-hYIklPjiV01kxJ3-Ehj_HzMxF3clI69fwuWX_Q\"\n    }\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL_AUTH_VPN",
+			"value": "http://10.66.66.1:3001"
+		},
+		{
+			"key": "Username",
+			"value": "andrenk#2"
+		},
+		{
+			"key": "Password",
+			"value": "@ndr3nkd0gk3R"
+		},
+		{
+			"key": "UserID",
+			"value": "905f4920-85e2-4475-86e1-4859b121d525"
+		},
+		{
+			"key": "BASE_URL_BILLING",
+			"value": "http://localhost:8080/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "BASE_URL_AUTH",
+			"value": "https://dogker-auth.alendra.dev",
+			"type": "string"
+		}
+	]
+}
