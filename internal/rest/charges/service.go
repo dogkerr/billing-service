@@ -43,7 +43,7 @@ func (s *service) CreateCharge(charge ChargeInput) (Charge, error) {
 
 	//Check if user has enough balance, if not stop container
 	if (len(mutationsList) == 0) || (mutationsList[0].Balance < totalCost) {
-		_ = fmt.Errorf("no balance, stopping")
+		//Stop container
 		conn, err := grpc.GetGRPCClient("103.175.219.0:8888")
 		if err != nil {
 			err = fmt.Errorf("error stopping container: %v", err)
@@ -61,6 +61,9 @@ func (s *service) CreateCharge(charge ChargeInput) (Charge, error) {
 			err = fmt.Errorf("error stopping container: %v", err)
 			return Charge{}, err
 		}
+
+		err = fmt.Errorf("user does not have enough balance")
+		return Charge{}, err
 	}
 
 	//Charge user

@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
 type chargeHandler struct {
@@ -41,20 +40,6 @@ func (h *chargeHandler) InitiateCharge(c *gin.Context) {
 	// Create charge
 	charge, err := h.depositService.CreateCharge(input)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	// Create mutation
-	mutationInput := mutations.MutationInput{
-		ID:       uuid.NewString(),
-		UserID:   input.UserID,
-		Mutation: input.TotalCost,
-		Type:     "charge",
-		ChargeID: input.ID,
-	}
-
-	if _, err := h.mutationService.CreateMutation(mutationInput); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

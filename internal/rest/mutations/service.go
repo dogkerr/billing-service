@@ -33,19 +33,10 @@ func (s *service) CreateMutation(mutation MutationInput) (Mutation, error) {
 
 	//Calculate current balance
 	currentBalance := float32(0)
-	if len(mutations) > 0 {
-		currentBalance = mutations[0].Balance
-		if mutation.Type == "charge" {
-			currentBalance -= mutation.Mutation
-		} else if mutation.Type == "deposit" {
-			currentBalance += mutation.Mutation
-		}
-	} else {
-		if mutation.Type == "charge" {
-			currentBalance -= mutation.Mutation
-		} else if mutation.Type == "deposit" {
-			currentBalance += mutation.Mutation
-		}
+	if mutation.Type == "charge" && len(mutations) > 0 && mutations[0].Balance > mutation.Mutation {
+		currentBalance -= mutation.Mutation
+	} else if mutation.Type == "deposit" {
+		currentBalance += mutation.Mutation
 	}
 
 	mutationObj := Mutation{
