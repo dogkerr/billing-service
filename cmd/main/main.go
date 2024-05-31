@@ -91,8 +91,8 @@ func main() {
 
 	depositsRoute := api.Group("/deposits")
 	{
-		depositsRoute.GET("/", rest.AuthMiddleware(), depositsHandler.GetDepositByID)
 		depositsRoute.POST("/", rest.AuthMiddleware(), depositsHandler.InitiateDeposit)
+		depositsRoute.GET("/:id", rest.AuthMiddleware(), depositsHandler.GetDepositByID)
 	}
 
 	chargesRoute := api.Group("/charges")
