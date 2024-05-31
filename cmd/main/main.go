@@ -98,7 +98,7 @@ func main() {
 	chargesRoute := api.Group("/charges")
 	{
 		chargesRoute.POST("/", rest.AuthMiddleware(), chargeHandler.InitiateCharge)
-		chargesRoute.GET("/", rest.AuthMiddleware(), chargeHandler.GetChargeByID)
+		chargesRoute.GET("/:id", rest.AuthMiddleware(), chargeHandler.GetChargeByID)
 	}
 
 	mutationsRoute := api.Group("/mutations")

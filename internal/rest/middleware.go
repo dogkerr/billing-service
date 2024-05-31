@@ -16,15 +16,13 @@ func AuthMiddleware() gin.HandlerFunc {
 		authHeader := c.GetHeader("Authorization")
 
 		if authHeader == "" {
-			fmt.Println("1")
-			c.AbortWithStatus(http.StatusUnauthorized)
+			c.AbortWithError(http.StatusUnauthorized, fmt.Errorf("missing Authorization header"))
 			return
 		}
 
 		parts := strings.Split(authHeader, " ")
 		if len(parts) != 2 || parts[0] != "Bearer" {
-			fmt.Println("2")
-			c.AbortWithStatus(http.StatusUnauthorized)
+			c.AbortWithError(http.StatusUnauthorized, fmt.Errorf("invalid Authorization header"))
 			return
 		}
 
@@ -39,31 +37,26 @@ func AuthMiddleware() gin.HandlerFunc {
 		})
 
 		if err != nil {
-			fmt.Println("3")
-			c.AbortWithStatus(http.StatusUnauthorized)
+			c.AbortWithError(http.StatusUnauthorized, err)
 			return
 		}
 
 		if !token.Valid {
-			fmt.Println("4")
-			c.AbortWithStatus(http.StatusUnauthorized)
+			c.AbortWithError(http.StatusUnauthorized, fmt.Errorf("invalid token"))
 			return
 		}
 
 		// Get the claims
 		claims := token.Claims.(*jwt.MapClaims)
-		fmt.Println("5", claims)
 
 		// Extract the userID from the claims
 		userID, ok := (*claims)["sub"].(string)
 		if !ok {
-			fmt.Println("5b")
-			c.AbortWithStatus(http.StatusUnauthorized)
+			c.AbortWithError(http.StatusUnauthorized, fmt.Errorf("missing sub claim"))
 			return
 		}
 
 		if !c.IsAborted() {
-			fmt.Println("UserID:", userID)
 			c.Set("userID", userID)
 		}
 
