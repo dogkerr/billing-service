@@ -89,6 +89,7 @@ func main() {
 	router := gin.Default()
 	api := router.Group("/api/v1")
 
+	router.RedirectTrailingSlash = false
 	depositsRoute := api.Group("/deposits")
 	{
 		depositsRoute.POST("/", rest.AuthMiddleware(), rest.CORSMiddleware(), depositsHandler.InitiateDeposit)
