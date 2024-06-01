@@ -92,7 +92,6 @@ func main() {
 	api := router.Group("/api/v1")
 
 	router.RedirectTrailingSlash = false
-	corsSeting := cors.Default()
 	router.Use(cors.New(cors.Config{
 		AllowAllOrigins:  true,
 		AllowMethods:      []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
