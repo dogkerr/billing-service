@@ -44,7 +44,7 @@ func (s *service) CreateCharge(charge ChargeInput) (Charge, error) {
 	//Check if user has enough balance, if not stop container
 	if (len(mutationsList) == 0) || (mutationsList[0].Balance < totalCost) {
 		//Stop container
-		conn, err := grpc.GetGRPCClient("103.175.219.0:8888")
+		conn, err := grpc.GetGRPCClient("container-service:8888")
 		if err != nil {
 			err = fmt.Errorf("error stopping container: %v", err)
 			return Charge{}, err
@@ -94,7 +94,7 @@ func (s *service) CreateCharge(charge ChargeInput) (Charge, error) {
 
 	//Call mailing service
 	fmt.Println("Sending email...")
-	conn, err := grpc.GetGRPCClient("103.175.219.0:9897")
+	conn, err := grpc.GetGRPCClient("mailing-service:9897")
 	if err != nil {
 		err = fmt.Errorf("error stopping container: %v", err)
 		return Charge{}, err

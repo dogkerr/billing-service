@@ -19,7 +19,7 @@ import (
 func main() {
 	//GORM Setup
 	//TODO: 2
-	dsn := "host=103.175.219.0 user=admin password=admin dbname=dogker port=5432 sslmode=disable"
+	dsn := "host=dogker-postgres user=admin password=admin dbname=dogker port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
@@ -60,7 +60,7 @@ func main() {
 	chargeHandler := charges.NewChargeHandler(chargeService, mutationService)
 
 	//RabbitMQ Setup
-	rmq := rabbitmq.NewRabbitMQ("amqp://guest:guest@103.175.219.0:5672/")
+	rmq := rabbitmq.NewRabbitMQ("amqp://guest:guest@rabbitmq:5672/")
 	msgs, err := rmq.Channel.Consume(
 		"monitor-billing",  // queue
 		"billing-consumer", // consumer

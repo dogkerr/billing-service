@@ -18,7 +18,7 @@ func NewService() *service {
 
 func (s *service) GetUserById(userID string) (*protos.User, error) {
 	//users gRPC Client Setup
-	conn, err := grpc.GetGRPCClient("103.175.219.0:4000")
+	conn, err := grpc.GetGRPCClient("dogker-authentications:4000")
 	if err != nil {
 		return nil, err
 	}
