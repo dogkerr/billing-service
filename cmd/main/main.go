@@ -10,6 +10,7 @@ import (
 	"dogker/andrenk/billing-service/internal/rest/payment"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -92,25 +93,32 @@ func main() {
 
 	router.RedirectTrailingSlash = false
 	corsSeting := cors.Default()
+	router.Use(cors.New(cors.Config{
+		AllowAllOrigins:  true,
+		AllowMethods:      []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "content-type", "authorization", "Accept", "User-Agent", "Cache-Control", "Pragma"},
+		ExposeHeaders:    []string{"Origin", "content-type", "authorization", "Accept", "User-Agent", "Cache-Control", "Pragma"},
+		AllowCredentials: true,
 
-	router.Use(corsSeting)
+		MaxAge: 72 * time.Hour,
+	}))
 
 	depositsRoute := api.Group("/deposits")
 	{
-		depositsRoute.POST("", rest.AuthMiddleware(),  depositsHandler.InitiateDeposit)
-		depositsRoute.GET("/:id", rest.AuthMiddleware(),  depositsHandler.GetDepositByID)
+		depositsRoute.POST("", rest.AuthMiddleware(), depositsHandler.InitiateDeposit)
+		depositsRoute.GET("/:id", rest.AuthMiddleware(), depositsHandler.GetDepositByID)
 	}
 
 	chargesRoute := api.Group("/charges")
 	{
-		chargesRoute.POST("", rest.AuthMiddleware(),  chargeHandler.InitiateCharge)
-		chargesRoute.GET("/:id", rest.AuthMiddleware(),  chargeHandler.GetChargeByID)
+		chargesRoute.POST("", rest.AuthMiddleware(), chargeHandler.InitiateCharge)
+		chargesRoute.GET("/:id", rest.AuthMiddleware(), chargeHandler.GetChargeByID)
 	}
 
 	mutationsRoute := api.Group("/mutations")
 	{
-		mutationsRoute.GET("", rest.AuthMiddleware(),  mutationsHandler.GetMutationsByUserID)
-		mutationsRoute.GET("/:id", rest.AuthMiddleware(),  mutationsHandler.GetMutationByID)
+		mutationsRoute.GET("", rest.AuthMiddleware(), mutationsHandler.GetMutationsByUserID)
+		mutationsRoute.GET("/:id", rest.AuthMiddleware(), mutationsHandler.GetMutationByID)
 	}
 
 	notificationRoute := api.Group("/notification")
