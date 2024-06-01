@@ -89,18 +89,18 @@ func main() {
 
 	//REST Setup
 	router := gin.Default()
-	api := router.Group("/api/v1")
-
-	router.RedirectTrailingSlash = false
 	router.Use(cors.New(cors.Config{
 		AllowAllOrigins:  true,
-		AllowMethods:      []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "content-type", "authorization", "Accept", "User-Agent", "Cache-Control", "Pragma"},
 		ExposeHeaders:    []string{"Origin", "content-type", "authorization", "Accept", "User-Agent", "Cache-Control", "Pragma"},
 		AllowCredentials: true,
 
-		MaxAge: 72 * time.Hour,
+		MaxAge: 12 * time.Hour,
 	}))
+	router.RedirectTrailingSlash = false
+
+	api := router.Group("/api/v1")
 
 	depositsRoute := api.Group("/deposits")
 	{
