@@ -91,20 +91,20 @@ func main() {
 
 	depositsRoute := api.Group("/deposits")
 	{
-		depositsRoute.POST("/", rest.AuthMiddleware(), depositsHandler.InitiateDeposit)
-		depositsRoute.GET("/:id", rest.AuthMiddleware(), depositsHandler.GetDepositByID)
+		depositsRoute.POST("/", rest.AuthMiddleware(), rest.CORSMiddleware(), depositsHandler.InitiateDeposit)
+		depositsRoute.GET("/:id", rest.AuthMiddleware(), rest.CORSMiddleware(), depositsHandler.GetDepositByID)
 	}
 
 	chargesRoute := api.Group("/charges")
 	{
-		chargesRoute.POST("/", rest.AuthMiddleware(), chargeHandler.InitiateCharge)
-		chargesRoute.GET("/:id", rest.AuthMiddleware(), chargeHandler.GetChargeByID)
+		chargesRoute.POST("/", rest.AuthMiddleware(), rest.CORSMiddleware(), chargeHandler.InitiateCharge)
+		chargesRoute.GET("/:id", rest.AuthMiddleware(), rest.CORSMiddleware(), chargeHandler.GetChargeByID)
 	}
 
 	mutationsRoute := api.Group("/mutations")
 	{
-		mutationsRoute.GET("/", rest.AuthMiddleware(), mutationsHandler.GetMutationsByUserID)
-		mutationsRoute.GET("/:id", rest.AuthMiddleware(), mutationsHandler.GetMutationByID)
+		mutationsRoute.GET("/", rest.AuthMiddleware(), rest.CORSMiddleware(), mutationsHandler.GetMutationsByUserID)
+		mutationsRoute.GET("/:id", rest.AuthMiddleware(), rest.CORSMiddleware(), mutationsHandler.GetMutationByID)
 	}
 
 	notificationRoute := api.Group("/notification")
