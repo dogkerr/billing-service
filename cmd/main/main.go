@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -90,6 +91,10 @@ func main() {
 	api := router.Group("/api/v1")
 
 	router.RedirectTrailingSlash = false
+	corsSeting := cors.Default()
+
+	router.Use(corsSeting)
+
 	depositsRoute := api.Group("/deposits")
 	{
 		depositsRoute.POST("", rest.AuthMiddleware(), rest.CORSMiddleware(), depositsHandler.InitiateDeposit)
