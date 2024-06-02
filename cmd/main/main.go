@@ -20,7 +20,6 @@ import (
 
 func main() {
 	//GORM Setup
-	//TODO: 2
 	dsn := "host=dogker-postgres user=admin password=admin dbname=dogker port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
@@ -31,7 +30,6 @@ func main() {
 	db.AutoMigrate(&deposits.Deposit{}, &mutations.Mutation{}, &charges.Charge{})
 
 	//Public Key Setup
-	//TODO: 3
 	publicKeyAuthServer := "-----BEGIN PUBLIC KEY-----\nMIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQAodxwFdiFKWTG/ZU7vXPdk8ox+nNU\n1JmxsmI8i8tYrYf6QxmwBz13jS/PZsb8dJbMFY3YTMMih6SKz7e+cQ68IbgA7BnY\n5fYFQET4SNHVX/zaH6J70ERJLsRrarmWSXsNbMbnqXlIkoorYXeAn9vsLbr/RPw9\nDYaoq4JrQ+OGsc4LHMw=\n-----END PUBLIC KEY-----\n"
 
 	err = auth.InitPublicKey(publicKeyAuthServer)

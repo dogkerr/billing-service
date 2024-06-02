@@ -38,13 +38,13 @@ func (s *service) CreateCharge(charge ChargeInput) (Charge, error) {
 	}
 
 	//Calculate cost
-	totalCost := charge.TotalCpuUsage + charge.TotalMemoryUsage + charge.TotalNetIngressUsage + charge.TotalNetEgressUsage
+	totalCost := 0.0175*charge.TotalCpuUsage + 0.08*charge.TotalMemoryUsage + 0.00175*charge.TotalNetIngressUsage + 0.00175*charge.TotalNetEgressUsage
 	fmt.Println("Total cost: ", totalCost)
 
 	//Check if user has enough balance, if not stop container
 	if (len(mutationsList) == 0) || (mutationsList[0].Balance < totalCost) {
 		//Stop container
-		fmt.Sprintf("stopping user %s contianer...", charge.UserID)
+		fmt.Printf("stopping user %s contianer...", charge.UserID)
 		conn, err := grpc.GetGRPCClient("container-service:6666")
 		if err != nil {
 			err = fmt.Errorf("error stopping container: %v", err)
